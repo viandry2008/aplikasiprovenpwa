@@ -6,7 +6,6 @@ export default function AttendanceTable({ employees, timeLabel, activeTab, curre
   return (
     <View style={styles.container}>
       <View style={styles.table}>
-        {/* Header */}
         <View style={styles.headerRow}>
           <Text style={[styles.headerCell, styles.noCell]}>No.</Text>
           <Text style={[styles.headerCell, styles.idCell]}>ID</Text>
@@ -14,7 +13,6 @@ export default function AttendanceTable({ employees, timeLabel, activeTab, curre
           <Text style={[styles.headerCell, styles.timeCell]}>{timeLabel}</Text>
         </View>
 
-        {/* Data Rows */}
         {employees.map((emp, index) => {
           const globalIndex = (currentPage - 1) * itemsPerPage + (index + 1); 
           return (
