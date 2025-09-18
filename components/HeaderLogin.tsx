@@ -4,7 +4,6 @@ import { View, Image, StyleSheet } from 'react-native';
 export default function Header() {
   return (
     <View style={styles.container}>
-      {/* Logo lebih besar */}
       <View style={styles.logoContainer}>
         <Image
           source={require('../assets/logo_smarthrm.png')} 
@@ -13,7 +12,6 @@ export default function Header() {
         />
       </View>
 
-      {/* Ilustrasi lebih besar & rapat */}
       <Image 
         source={require('../assets/pic1.png')} 
         style={styles.illustration}
