@@ -1,16 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import React, { useState } from 'react';
-import {
-  Image,
-  KeyboardAvoidingView,
-  Platform,
-  ScrollView,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import { Image,KeyboardAvoidingView,Platform,ScrollView,Text,TextInput,TouchableOpacity,View,} from 'react-native';
 import Toast from 'react-native-toast-message';
 import CustomPicker from '../components/CustomPicker';
 import Footer from '../components/Footer';
@@ -43,7 +34,6 @@ export default function LoginForm() {
     );
 
     if (!account) {
-      // ❌ Toast error
       Toast.show({
         type: 'error',
         text1: 'Login Gagal ❌',
@@ -54,7 +44,7 @@ export default function LoginForm() {
       return;
     }
 
-    // ✅ Toast sukses
+
     Toast.show({
       type: 'success',
       text1: 'Login Berhasil 🎉',
@@ -63,7 +53,7 @@ export default function LoginForm() {
       visibilityTime: 1200,
     });
 
-    // Delay sebentar sebelum pindah ke dashboard
+
     setTimeout(() => {
       router.push({
         pathname: '/dashboard',
@@ -115,7 +105,7 @@ export default function LoginForm() {
             <View style={styles.card}>
               <Text style={styles.title}>Manajemen RFID Absen</Text>
 
-              {/* Username */}
+
               <View style={styles.inputContainer}>
                 <Ionicons
                   name="person-outline"
@@ -134,7 +124,7 @@ export default function LoginForm() {
                 />
               </View>
 
-              {/* Password */}
+
               <View style={styles.inputContainer}>
                 <Ionicons
                   name="lock-closed-outline"
@@ -164,7 +154,6 @@ export default function LoginForm() {
                 </TouchableOpacity>
               </View>
 
-              {/* Shift Picker */}
               <View style={styles.pickerContainer}>
                 <CustomPicker
                   selectedValue={selectedShift}
@@ -173,7 +162,7 @@ export default function LoginForm() {
                 />
               </View>
 
-              {/* Tombol Login */}
+
               <TouchableOpacity
                 style={styles.loginButton}
                 onPress={handleLogin}
