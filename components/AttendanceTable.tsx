@@ -16,7 +16,7 @@ export default function AttendanceTable({ employees, timeLabel, activeTab, curre
 
         {/* Data Rows */}
         {employees.map((emp, index) => {
-          const globalIndex = (currentPage - 1) * itemsPerPage + (index + 1); // ✅ hitung nomor global
+          const globalIndex = (currentPage - 1) * itemsPerPage + (index + 1); 
           return (
             <View
               key={emp.id}
