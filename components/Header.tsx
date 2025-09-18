@@ -57,7 +57,6 @@ export default function Header({ userName }: HeaderProps) {
 
   return (
     <View style={styles.container}>
-      {/* Row Logo + Logout */}
       <View style={styles.topRow}>
         <View style={styles.logoContainer}>
           <Image
@@ -72,13 +71,13 @@ export default function Header({ userName }: HeaderProps) {
         </TouchableOpacity>
       </View>
 
-      {/* Greeting */}
+
       <View style={styles.greetingSection}>
         <Text style={styles.greeting}>{getGreeting()}, {userName}</Text>
         <Text style={styles.subtitle}>Selamat Beraktivitas. {getFormattedDate()}</Text>
       </View>
 
-      {/* Modal Konfirmasi */}
+
       <Modal transparent visible={showConfirm} animationType="fade">
         <View style={styles.modalOverlay}>
           <View style={styles.modalBox}>
