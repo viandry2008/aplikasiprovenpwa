@@ -1,5 +1,5 @@
 import { Ionicons } from '@expo/vector-icons';
-import { router } from 'expo-router'; // ✅ import router
+import { router } from 'expo-router'; 
 import React, { useState } from 'react';
 import { Dimensions, Image, Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Toast from 'react-native-toast-message';
@@ -13,7 +13,6 @@ const { width } = Dimensions.get('window');
 export default function Header({ userName }: HeaderProps) {
   const [showConfirm, setShowConfirm] = useState(false);
 
-  // === Fungsi Sapaan Dinamis ===
   const getGreeting = () => {
     const hour = new Date().getHours();
     if (hour >= 0 && hour < 12) return "Selamat Pagi";
@@ -22,7 +21,6 @@ export default function Header({ userName }: HeaderProps) {
     return "Selamat Malam";
   };
 
-  // === Format Hari & Tanggal ===
   const getFormattedDate = () => {
     const date = new Date();
     const days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
@@ -44,7 +42,6 @@ export default function Header({ userName }: HeaderProps) {
   const handleConfirmLogout = () => {
     setShowConfirm(false);
 
-    // ✅ Tampilkan toast
     Toast.show({
       type: 'success',
       text1: 'Berhasil Keluar',
@@ -53,7 +50,6 @@ export default function Header({ userName }: HeaderProps) {
       visibilityTime: 2000,
     });
 
-    // ✅ Redirect ke halaman login setelah 2 detik
     setTimeout(() => {
       router.replace('/login');
     }, 2000);
