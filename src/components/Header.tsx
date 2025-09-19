@@ -1,5 +1,5 @@
 import { Ionicons } from '@expo/vector-icons';
-import { router } from 'expo-router'; 
+import { router } from 'expo-router';
 import React, { useState } from 'react';
 import { Dimensions, Image, Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Toast from 'react-native-toast-message';
@@ -60,7 +60,7 @@ export default function Header({ userName }: HeaderProps) {
       <View style={styles.topRow}>
         <View style={styles.logoContainer}>
           <Image
-            source={require('../assets/logo_smarthrm.png')}
+            source={require('../../assets/logo_smarthrm.png')}
             style={styles.logo}
             resizeMode="contain"
           />

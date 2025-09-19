@@ -1,8 +1,8 @@
+import { ExternalLink } from '@/src/components/external-link';
+import ParallaxScrollView from '@/src/components/parallax-scroll-view';
+import { ThemedText } from '@/src/components/themed-text';
 import React from 'react';
-import { View, Platform, StyleSheet } from 'react-native';
-import { ExternalLink } from '@/components/external-link';
-import ParallaxScrollView from '@/components/parallax-scroll-view';
-import { ThemedText } from '@/components/themed-text';
+import { Platform, StyleSheet, View } from 'react-native';
 
 export default function ExploreScreen() {
   return (

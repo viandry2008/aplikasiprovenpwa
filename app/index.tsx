@@ -1,12 +1,17 @@
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
-import LoginForm from '../components/LoginForm';
+import { StyleSheet, View } from 'react-native';
+import Login from './login';
+
+const queryClient = new QueryClient();
 
 export default function Index() {
   return (
-    <View style={styles.container}>
-      <LoginForm />
-    </View>
+    <QueryClientProvider client={queryClient}>
+      <View style={styles.container}>
+        <Login />
+      </View>
+    </QueryClientProvider>
   );
 }
 

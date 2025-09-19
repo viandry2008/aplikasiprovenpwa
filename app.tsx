@@ -1,12 +1,12 @@
-import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import LoginForm from './app/LoginForm';
-import Dashboard from './app/Dashboard';
+import React from 'react';
+import Dashboard from './app/(tabs)/dashboard';
+import LoginForm from './app/login';
 
 export type RootStackParamList = {
   Login: undefined;
-  Dashboard: { username: string; shift: string }; 
+  Dashboard: { username: string; shift: string };
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();

@@ -1,14 +1,13 @@
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import React, { useState } from 'react';
-import { Modal, SafeAreaView, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import Toast from 'react-native-toast-message';
+import { SafeAreaView, ScrollView, TextInput, View } from 'react-native';
 
-import AttendanceCard from '../../components/AttendanceCard';
-import AttendanceTable from '../../components/AttendanceTable';
-import { styles } from '../../components/DashboardStyles';
-import Header from '../../components/Header';
-import Pagination from '../../components/Pagination';
-import TabSection from '../../components/TabSection';
+import AttendanceCard from '../../src/components/AttendanceCard';
+import AttendanceTable from '../../src/components/AttendanceTable';
+import { styles } from '../../src/components/DashboardStyles';
+import Header from '../../src/components/Header';
+import Pagination from '../../src/components/Pagination';
+import TabSection from '../../src/components/TabSection';
 
 const employeeData = [
   { no: 1, id: '25031', name: 'Anesty Nuantury', checkIn: '07.00', checkOut: '16.05' },
@@ -39,7 +38,6 @@ export default function Dashboard() {
 
   const [activeTab, setActiveTab] = useState<'masuk' | 'keluar'>('masuk');
   const [currentPage, setCurrentPage] = useState(1);
-  const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [rfidCode, setRfidCode] = useState(''); // state baru untuk kode RFID
 
   const itemsPerPage = 10;
@@ -58,30 +56,13 @@ export default function Dashboard() {
   const endIndex = startIndex + itemsPerPage;
   const currentData = employeeData.slice(startIndex, endIndex);
 
-  // handle logout konfirmasi
-  const handleLogoutConfirm = () => {
-    setShowLogoutModal(false);
-
-    Toast.show({
-      type: 'success',
-      text1: 'Berhasil Keluar',
-      text2: 'Anda berhasil keluar dari aplikasi 👋',
-      position: 'top',
-      visibilityTime: 2000,
-    });
-
-    setTimeout(() => {
-      router.replace('/login');
-    }, 2000);
-  };
-
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.scrollView}>
         {/* Header dengan tombol logout */}
-        <Header userName={username || 'Guest'} onLogout={() => setShowLogoutModal(true)} />
-        
-        <AttendanceCard 
+        <Header userName={username || 'Guest'} />
+
+        <AttendanceCard
           totalEmployees={employeeData.length}
           shift={shift || 'Shift 1'}
         />
@@ -104,19 +85,19 @@ export default function Dashboard() {
           />
         </View>
 
-        <TabSection 
+        <TabSection
           activeTab={activeTab}
           onTabChange={handleTabChange}
         />
-        
-        <AttendanceTable 
-          employees={currentData} 
-          timeLabel={activeTab === 'masuk' ? 'Jam Masuk' : 'Jam Keluar'} 
+
+        <AttendanceTable
+          employees={currentData}
+          timeLabel={activeTab === 'masuk' ? 'Jam Masuk' : 'Jam Keluar'}
           activeTab={activeTab}
-          currentPage={currentPage}      
-          itemsPerPage={itemsPerPage}   
+          currentPage={currentPage}
+          itemsPerPage={itemsPerPage}
         />
-        
+
         <Pagination
           currentPage={currentPage}
           totalPages={totalPages}
@@ -126,30 +107,6 @@ export default function Dashboard() {
         />
       </ScrollView>
 
-      {/* Modal Konfirmasi Logout */}
-      <Modal transparent visible={showLogoutModal} animationType="fade">
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0,0,0,0.5)' }}>
-          <View style={{ backgroundColor: 'white', padding: 20, borderRadius: 10, width: '80%' }}>
-            <Text style={{ fontSize: 16, fontWeight: 'bold', textAlign: 'center', marginBottom: 20 }}>
-              Apakah anda yakin ingin keluar dari Aplikasi?
-            </Text>
-            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-              <TouchableOpacity
-                onPress={() => setShowLogoutModal(false)}
-                style={{ flex: 1, marginRight: 5, padding: 12, backgroundColor: '#9CA3AF', borderRadius: 6 }}
-              >
-                <Text style={{ color: 'white', textAlign: 'center' }}>Batal</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={handleLogoutConfirm}
-                style={{ flex: 1, marginLeft: 5, padding: 12, backgroundColor: '#EF4444', borderRadius: 6 }}
-              >
-                <Text style={{ color: 'white', textAlign: 'center' }}>Yakin</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-      </Modal>
     </SafeAreaView>
   );
 }
