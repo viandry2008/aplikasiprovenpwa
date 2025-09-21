@@ -42,6 +42,10 @@ export default function Header({ userName }: HeaderProps) {
   const handleConfirmLogout = () => {
     setShowConfirm(false);
 
+    setTimeout(() => {
+      router.replace('/login');
+    }, 2000);
+
     Toast.show({
       type: 'success',
       text1: 'Berhasil Keluar',
@@ -49,10 +53,6 @@ export default function Header({ userName }: HeaderProps) {
       position: 'top',
       visibilityTime: 2000,
     });
-
-    setTimeout(() => {
-      router.replace('/login');
-    }, 2000);
   };
 
   return (

@@ -1,26 +1,26 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, Modal } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import React, { useState } from 'react';
+import { Modal, Text, TouchableOpacity, View } from 'react-native';
 import { styles } from './CustomPickerStyles';
 
 
 interface PickerOption {
   label: string;
-  value: string;
+  value: any;
 }
 
 interface CustomPickerProps {
-  selectedValue: string;
-  onValueChange: (value: string) => void;
+  selectedValue: any;
+  onValueChange: (value: any) => void;
   options: PickerOption[];
 }
 
 export default function CustomPicker({ selectedValue, onValueChange, options }: CustomPickerProps) {
   const [modalVisible, setModalVisible] = useState(false);
 
-  const selectedOption = options.find(option => option.value === selectedValue);
+  const selectedOption = options.find(option => option.value?.id === selectedValue?.id);
 
-  const handleSelect = (value: string) => {
+  const handleSelect = (value: any) => {
     onValueChange(value);
     setModalVisible(false);
   };
@@ -45,16 +45,16 @@ export default function CustomPicker({ selectedValue, onValueChange, options }: 
             <Text style={styles.modalTitle}>Pilih Shift</Text>
             {options.map((option) => (
               <TouchableOpacity
-                key={option.value}
+                key={option.value.id}
                 style={[
                   styles.option,
-                  selectedValue === option.value && styles.selectedOption
+                  selectedValue?.id === option.value.id && styles.selectedOption
                 ]}
                 onPress={() => handleSelect(option.value)}
               >
                 <Text style={[
                   styles.optionText,
-                  selectedValue === option.value && styles.selectedOptionText
+                  selectedValue?.id === option.value.id && styles.selectedOptionText
                 ]}>
                   {option.label}
                 </Text>

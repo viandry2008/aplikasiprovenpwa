@@ -32,18 +32,14 @@ export default function LoginForm() {
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [selectedShift, setSelectedShift] = useState<string>('');
+  const [selectedShift, setSelectedShift] = useState<any>('');
   const [showPassword, setShowPassword] = useState(false);
 
   // fallback shift kalau API kosong
   const shiftOptions = data?.data?.map((shift: any) => ({
     label: `${shift.type} ${shift.ke} (${shift.waktu_mulai}–${shift.waktu_selesai})`,
-    value: shift.id.toString(), // pastikan string
-  })) || [
-      { label: 'Shift 1 (07:00–15:00)', value: 'shift1' },
-      { label: 'Shift 2 (15:00–23:00)', value: 'shift2' },
-      { label: 'Shift 3 (23:00–07:00)', value: 'shift3' },
-    ];
+    value: shift, // kirim object shift, bukan string
+  })) || [];
 
   const handleLogin = () => {
     if (!username || !password) {
@@ -75,16 +71,15 @@ export default function LoginForm() {
           // simpan shift ke local
           await storage.set('shift', selectedShift);
 
-          Toast.show({
-            type: 'success',
-            text1: 'Login Berhasil 🎉',
-            text2: `Selamat datang, ${res.conntent.name}`,
-            position: 'top',
-            visibilityTime: 1200,
-          });
-
           setTimeout(() => {
             router.push('/dashboard');
+            Toast.show({
+              type: 'success',
+              text1: 'Login Berhasil 🎉',
+              text2: `Selamat datang, ${res.conntent.name}`,
+              position: 'top',
+              visibilityTime: 1200,
+            });
           }, 1000);
         },
         onError: () => {
@@ -99,16 +94,6 @@ export default function LoginForm() {
       }
     );
   };
-
-
-  if (isLoading) {
-    return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <ActivityIndicator size="large" color="#007AFF" />
-        <Text style={{ marginTop: 10 }}>Memuat shift...</Text>
-      </View>
-    );
-  }
 
   return (
     <KeyboardAvoidingView
@@ -230,6 +215,28 @@ export default function LoginForm() {
           </View>
         </View>
       </ScrollView>
+      {(isLoading || loginMutation.isPending) && (
+        <View
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: "rgba(255,255,255,0.7)",
+            justifyContent: "center",
+            alignItems: "center",
+            zIndex: 10,
+          }}
+        >
+          <ActivityIndicator size="large" color="#007AFF" />
+          <Text style={{ marginTop: 10 }}>
+            {isLoading ? "Memuat shift..." : "Sedang login..."}
+          </Text>
+        </View>
+      )}
+
+
     </KeyboardAvoidingView>
   );
 }

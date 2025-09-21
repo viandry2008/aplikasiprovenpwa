@@ -1,7 +1,8 @@
-import { useLocalSearchParams, useRouter } from 'expo-router';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { SafeAreaView, ScrollView, TextInput, View } from 'react-native';
 
+import { useAuthStore } from '@/src/store/authStore';
+import { storage } from '@/src/utils/storage';
 import AttendanceCard from '../../src/components/AttendanceCard';
 import AttendanceTable from '../../src/components/AttendanceTable';
 import { styles } from '../../src/components/DashboardStyles';
@@ -33,8 +34,6 @@ const employeeData = [
 ];
 
 export default function Dashboard() {
-  const { username, shift } = useLocalSearchParams<{ username?: string; shift?: string }>();
-  const router = useRouter();
 
   const [activeTab, setActiveTab] = useState<'masuk' | 'keluar'>('masuk');
   const [currentPage, setCurrentPage] = useState(1);
@@ -42,6 +41,24 @@ export default function Dashboard() {
 
   const itemsPerPage = 10;
   const totalPages = Math.ceil(employeeData.length / itemsPerPage);
+
+  // ambil user dari zustand
+  const user = useAuthStore((state: any) => state.user);
+  const setUser = useAuthStore((state: any) => state.setUser);
+  const [userShift, setUserShift] = useState<any>(null);
+
+  // kalau app di-restart, ambil user dari storage
+  useEffect(() => {
+    const loadUserAndShift = async () => {
+      const savedUser = await storage.get("user");
+      const savedShift = await storage.get("shift");
+
+      if (savedUser) setUser(savedUser);
+      if (savedShift) setUserShift(savedShift);
+    };
+    loadUserAndShift();
+  }, []);
+
 
   const handleTabChange = (tab: 'masuk' | 'keluar') => {
     setActiveTab(tab);
@@ -60,11 +77,11 @@ export default function Dashboard() {
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.scrollView}>
         {/* Header dengan tombol logout */}
-        <Header userName={username || 'Guest'} />
+        <Header userName={user?.name || "Guest"} />
 
         <AttendanceCard
           totalEmployees={employeeData.length}
-          shift={shift || 'Shift 1'}
+          shift={userShift ? userShift?.type + ' ' + userShift?.ke : 'Shift -'}
         />
 
         {/* Input Kode RFID */}
