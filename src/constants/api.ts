@@ -4,4 +4,8 @@ export const ENDPOINTS = {
     LOGIN: "login",
     LOGOUT: "logout",
     GET_SHIFT: "get-shift",
+    GET_ABSENCE: (shiftId: number, page: number = 1, filter: string) =>
+        `rfid/absen/${shiftId}?page=${page}&filter=${filter}`,
+    POST_ABSENCE_IN: "rfid/masuk",
+    POST_ABSENCE_OUT: "rfid/keluar",
 };

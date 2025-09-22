@@ -27,3 +27,38 @@ export interface ShiftResponse {
     message: string;
     data: Shift[];
 }
+
+export interface AttendanceResponse {
+    status: boolean;
+    code: number;
+    message: string;
+    data: Attendance[];
+    meta: Meta;
+}
+
+export interface Attendance {
+    id: number;
+    user_id: number;
+    karyawan_id: number;
+    tanggal: string; // format: YYYY-MM-DD
+    jam_masuk: string;
+    jam_keluar: string | null;
+    shift_id: number;
+    id_client: string;
+    created_at: string;
+    updated_at: string;
+    karyawan: Karyawan;
+}
+
+export interface Karyawan {
+    id: number;
+    nama_karyawan: string;
+}
+
+export interface Meta {
+    current_page: number;
+    per_page: number;
+    total: number;
+    last_page: number;
+}
+
