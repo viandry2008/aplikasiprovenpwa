@@ -142,7 +142,7 @@ export default function Dashboard() {
           <AttendanceTable
             employees={absences.map((item, index) => ({
               no: (currentPage - 1) * 10 + (index + 1),
-              id: item.karyawan?.id.toString(),
+              id: item.karyawan?.id_karyawan.toString(),
               name: item.karyawan?.nama_karyawan,
               checkIn: item.jam_masuk || "-",
               checkOut: item.jam_keluar || "-",

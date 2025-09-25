@@ -52,6 +52,7 @@ export interface Attendance {
 
 export interface Karyawan {
     id: number;
+    id_karyawan: string;
     nama_karyawan: string;
 }
 
