@@ -154,6 +154,8 @@ export default function LoginForm() {
                   onChangeText={setUsername}
                   autoCapitalize="none"
                   autoCorrect={false}
+                  underlineColorAndroid="transparent"
+                  numberOfLines={1}
                 />
               </View>
 
@@ -166,7 +168,7 @@ export default function LoginForm() {
                   style={styles.icon}
                 />
                 <TextInput
-                  style={[styles.input, { paddingRight: 50 }]}
+                  style={[styles.input, { paddingRight: 40 }]} // padding biar ga ketimpa eye icon
                   placeholder="Password"
                   placeholderTextColor="#999"
                   value={password}
@@ -174,7 +176,9 @@ export default function LoginForm() {
                   secureTextEntry={!showPassword}
                   autoCapitalize="none"
                   autoCorrect={false}
+                  underlineColorAndroid="transparent" // 🔑 hilangkan border default Android
                 />
+
                 <TouchableOpacity
                   onPress={() => setShowPassword(!showPassword)}
                   style={styles.eyeIcon}

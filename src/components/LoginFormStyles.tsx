@@ -40,6 +40,7 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 16,
     height: 50,
     width: '100%',
+    overflow: 'hidden',
   },
 
   icon: {
@@ -50,6 +51,9 @@ export const styles = StyleSheet.create({
     flex: 1,
     fontSize: 16,
     color: '#333',
+    textAlignVertical: 'center', // 🔑 center untuk Android
+    includeFontPadding: false,   // 🔑 rapihin vertical text Android
+    outlineWidth: 0,         // 🔑 hilangkan border default web
   },
 
   eyeIcon: {

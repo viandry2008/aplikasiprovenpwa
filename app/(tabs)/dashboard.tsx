@@ -1,6 +1,8 @@
+import { Ionicons } from "@expo/vector-icons"; // pastikan ada expo/vector-icons
 import React, { useEffect, useRef, useState } from "react";
 import {
   ActivityIndicator,
+  Modal,
   SafeAreaView,
   ScrollView,
   Text,
@@ -24,7 +26,7 @@ export default function Dashboard() {
   const [rfidCode, setRfidCode] = useState("");
   const [userShift, setUserShift] = useState<any>(null);
 
-  const inputRef = useRef<TextInput>(null); // ref untuk input
+  const inputRef = useRef<TextInput>(null);
 
   // ambil user dari zustand
   const user = useAuthStore((state: any) => state.user);
@@ -53,8 +55,11 @@ export default function Dashboard() {
   // mutation absen masuk & keluar
   const absenceInMutation = useAbsenceIn();
   const absenceOutMutation = useAbsenceOut();
+  const currentMutation =
+    activeTab === "masuk" ? absenceInMutation : absenceOutMutation;
 
-  // submit otomatis kalau sudah 8 digit
+  const { modal, setModal } = currentMutation;
+
   useEffect(() => {
     if (rfidCode.length === 8) {
       handleSubmit();
@@ -63,16 +68,13 @@ export default function Dashboard() {
 
   const handleSubmit = () => {
     if (!rfidCode) return;
-
     if (activeTab === "masuk") {
       absenceInMutation.mutate({ rfidCode, shiftId });
     } else {
       absenceOutMutation.mutate({ rfidCode });
     }
+    setRfidCode("");
 
-    setRfidCode(""); // reset input setelah submit
-
-    // fokus ulang biar input selalu aktif
     setTimeout(() => {
       inputRef.current?.focus();
     }, 100);
@@ -83,7 +85,6 @@ export default function Dashboard() {
     setCurrentPage(1);
     setRfidCode("");
 
-    // fokus ulang tiap kali tab ganti
     setTimeout(() => {
       inputRef.current?.focus();
     }, 100);
@@ -93,8 +94,22 @@ export default function Dashboard() {
     setCurrentPage(page);
   };
 
-  const currentMutation =
-    activeTab === "masuk" ? absenceInMutation : absenceOutMutation;
+  useEffect(() => {
+    if (modal.visible) {
+      const timer = setTimeout(() => {
+        setModal((prev: any) => ({ ...prev, visible: false }));
+      }, 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [modal.visible]);
+
+  useEffect(() => {
+    if (!modal.visible) {
+      setTimeout(() => {
+        inputRef.current?.focus();
+      }, 100);
+    }
+  }, [modal.visible]);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -113,10 +128,15 @@ export default function Dashboard() {
             value={rfidCode}
             onChangeText={setRfidCode}
             placeholder="Kode RFID"
-            keyboardType="numeric"
             maxLength={8}
             autoFocus
             editable={!currentMutation.isPending}
+            showSoftInputOnFocus={false}
+            onBlur={() => {
+              setTimeout(() => {
+                inputRef.current?.focus();
+              }, 100);
+            }}
             style={{
               width: "100%",
               borderWidth: 1,
@@ -127,9 +147,6 @@ export default function Dashboard() {
               backgroundColor: "#fff",
             }}
           />
-          {currentMutation.isPending && (
-            <ActivityIndicator size="small" style={{ marginTop: 8 }} />
-          )}
         </View>
 
         <TabSection activeTab={activeTab} onTabChange={handleTabChange} />
@@ -142,8 +159,8 @@ export default function Dashboard() {
           <AttendanceTable
             employees={absences.map((item, index) => ({
               no: (currentPage - 1) * 10 + (index + 1),
-              id: item.karyawan?.id_karyawan.toString(),
-              name: item.karyawan?.nama_karyawan,
+              id: item.karyawan?.id_karyawan?.toString() || "-",
+              name: item.karyawan?.nama_karyawan || "-",
               checkIn: item.jam_masuk || "-",
               checkOut: item.jam_keluar || "-",
             }))}
@@ -162,6 +179,77 @@ export default function Dashboard() {
           onPageChange={handlePageChange}
         />
       </ScrollView>
+
+      {/* 🔥 Overlay Loading */}
+      <Modal transparent visible={currentMutation.isPending} animationType="fade">
+        <View
+          style={{
+            flex: 1,
+            backgroundColor: "rgba(0,0,0,0.5)",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <View
+            style={{
+              backgroundColor: "white",
+              padding: 24,
+              borderRadius: 12,
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <ActivityIndicator size="large" color="#2794eb" />
+            <Text style={{ marginTop: 12, fontSize: 16, color: "#333" }}>
+              Memproses absensi...
+            </Text>
+          </View>
+        </View>
+      </Modal>
+
+      {/* ✅ Modal Success/Error (auto close) */}
+      <Modal transparent visible={modal.visible} animationType="fade" onRequestClose={() =>
+        setModal((prev: any) => ({ ...prev, visible: false }))
+      }>
+        <View
+          style={{
+            flex: 1,
+            backgroundColor: "rgba(0,0,0,0.5)",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <View
+            style={{
+              backgroundColor: "white",
+              padding: 24,
+              borderRadius: 12,
+              width: "80%",
+              alignItems: "center",
+            }}
+          >
+            {modal.type === "success" ? (
+              <Ionicons name="checkmark-circle" size={64} color="green" />
+            ) : (
+              <Ionicons name="close-circle" size={64} color="red" />
+            )}
+
+            <Text
+              style={{
+                fontSize: 18,
+                fontWeight: "bold",
+                color: modal.type === "success" ? "green" : "red",
+                marginTop: 12,
+              }}
+            >
+              {modal.title}
+            </Text>
+            <Text style={{ fontSize: 14, textAlign: "center", marginTop: 8 }}>
+              {modal.message}
+            </Text>
+          </View>
+        </View>
+      </Modal>
     </SafeAreaView>
   );
 }

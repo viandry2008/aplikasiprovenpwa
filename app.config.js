@@ -7,7 +7,7 @@ export default {
         platforms: ["ios", "android", "web"],
         icon: "./assets/Logo.png",
         splash: {
-            image: "./assets/Logo.png",
+            image: "./assets/images/icon.png",
             resizeMode: "contain",
             backgroundColor: "#ffffff"
         },
