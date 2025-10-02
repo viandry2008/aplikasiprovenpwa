@@ -5,7 +5,7 @@ export default {
         version: "1.0.0",
         orientation: "portrait",
         platforms: ["ios", "android", "web"],
-        icon: "./assets/Logo.png",
+        icon: "./assets/images/icon.png",
         splash: {
             image: "./assets/images/icon.png",
             resizeMode: "contain",
@@ -18,6 +18,14 @@ export default {
             shortName: "SHRM RFID",
             themeColor: "#000000",
             backgroundColor: "#ffffff"
+        },
+        assetBundlePatterns: [
+            "assets/fonts/*",   // ⬅️ pastikan font ikut dibundle
+            "assets/images/*",
+            "icons/*"
+        ],
+        extra: {
+            baseUrl: "./"
         }
     }
 };

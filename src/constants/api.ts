@@ -1,5 +1,6 @@
 // export const API_BASE_URL = "http://127.0.0.1:8000/api/"; // Localhost
-export const API_BASE_URL = "https://test.smarthrm-provenforceindonesia.site/api/"; // testing server
+// export const API_BASE_URL = "https://test.smarthrm-provenforceindonesia.site/api/"; // testing server
+export const API_BASE_URL = "https://smarthrm-provenforceindonesia.site/api/"; // live server
 
 export const ENDPOINTS = {
     LOGIN: "login",
